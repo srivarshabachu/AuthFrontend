@@ -44,7 +44,6 @@ const Forgotpassword = () => {
 
     return (
         <div className='fpcontainer'>
-            <div className='header'><div className='text'></div></div>
             <form onSubmit={handleSubmit}>
                 <div className='inputs'>
                     <label>Enter your Email:</label>
@@ -58,10 +57,10 @@ const Forgotpassword = () => {
                     <span style={{ color: 'red' }}>{errors.Email}</span>
                 </div> 
                 <div>
-                    <button type="submit" className='registerbtn'>Send</button>
+                    <button type="submit" className='loginbtn'>Send</button>
                 </div>
             </form>
-            {message && <div style={{ marginTop: '10px' }}>{message}</div>}
+            {message && <div style={{ marginTop: '10px', padding:'10px'}}>{message}</div>}
         </div>
     );
 

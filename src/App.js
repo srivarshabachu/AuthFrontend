@@ -11,10 +11,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register/:role" element={<Register />} />
         <Route path="/forgotpassword" element={<Forgotpassword />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/Reset-Password" element={< ResetPassword />} />
         <Route path="/otp/:username" element={<Otp />} />
         <Route path="/Emailverified" element={<Emailverified />} />

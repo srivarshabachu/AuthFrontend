@@ -4,6 +4,7 @@ import './styles.css'
 import { useParams } from 'react-router-dom';
 const Register = () => {
     const { role } = useParams();
+    const [message, setMessage] = useState('');
     console.log({ role })
     const [formData, setFormData] = useState({
         Username: '',
@@ -35,25 +36,23 @@ const Register = () => {
             formIsValid = false;
         } else {
             newErrors.Username = '';
-        }
-
-        // Email validation
-        if (!formData.Email.trim()) {
-            newErrors.Email = 'Email is required';
-            formIsValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formData.Email)) {
-            newErrors.Email = 'Email is invalid';
-            formIsValid = false;
-        } else {
-            newErrors.Email = '';
-        }
-
-        // Password validation
-        if (!formData.Password.trim()) {
-            newErrors.Password = 'Password is required';
-            formIsValid = false;
-        } else {
-            newErrors.Password = '';
+            // Email validation
+            if (!formData.Email.trim()) {
+                newErrors.Email = 'Email is required';
+                formIsValid = false;
+            } else if (!/\S+@\S+\.\S+/.test(formData.Email)) {
+                newErrors.Email = 'Email is invalid';
+                formIsValid = false;
+            } else {
+                newErrors.Email = '';
+                // Password validation
+                if (!formData.Password.trim()) {
+                    newErrors.Password = 'Password is required';
+                    formIsValid = false;
+                } else {
+                    newErrors.Password = '';
+                }
+            }
         }
         if (!formIsValid) {
             setErrors(newErrors);
@@ -74,11 +73,12 @@ const Register = () => {
                 .then((response) => {
                     console.log(response)
                     console.log('Form submitted:', formData);
-                    
+
                 })
                 .catch((err) => {
                     console.log("error is ", err);
                 })
+            setMessage('Password Reset Successfulll');
         }
         else {
             console.log("Select a valid role")
@@ -95,42 +95,43 @@ const Register = () => {
                     <li>one digit [0 - 9]</li>
                     <li>one character which isn't a digit or a letter</li>
                 </ul>
-                
-            </div>
-        <div className='container'>
-            <div className='header'><div className='text'>Registration Form</div></div>
-            <form onSubmit={handleSubmit}>
-                <div className='inputs'>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        name="Username"
-                        value={formData.Username}
-                        onChange={handleChange}
-                    />
-                    <span style={{ color: 'red' }}>{errors.Username}</span>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        name="Email"
-                        value={formData.Email}
-                        onChange={handleChange}
-                    />
-                    <span style={{ color: 'red' }}>{errors.Email}</span>
 
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        name="Password"
-                        value={formData.Password}
-                        onChange={handleChange}
-                    />
-                    <span style={{ color: 'red' }}>{errors.Password}</span>
-                </div>
-                <div>
-                    <button type="submit" className='registerbtn'>Register</button>
-                </div>
-            </form>
+            </div>
+            <div className='container'>
+                <div className='header'><div className='text'>{role} Registration Form</div></div>
+                <form onSubmit={handleSubmit}>
+                    <div className='inputs'>
+                        <label>Username:</label>
+                        <input
+                            type="text"
+                            name="Username"
+                            value={formData.Username}
+                            onChange={handleChange}
+                        />
+                        <span style={{ color: 'red' }}>{errors.Username}</span>
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            name="Email"
+                            value={formData.Email}
+                            onChange={handleChange}
+                        />
+                        <span style={{ color: 'red' }}>{errors.Email}</span>
+
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            name="Password"
+                            value={formData.Password}
+                            onChange={handleChange}
+                        />
+                        <span style={{ color: 'red' }}>{errors.Password}</span>
+                    </div>
+                    <div>
+                        <button type="submit" className='registerbtn'>Register</button>
+                    </div>
+                </form>
+                {message && <div style={{ left: '5px', marginTop: '10px' }}>{message}</div>}
             </div>
         </div>
     )

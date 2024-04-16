@@ -27,8 +27,8 @@ function ResetPassword() {
         e.preventDefault();
         try {
             const response = await axios.post('https://localhost:7235/api/Authentication/Reset-Password', { email, password, confirmPassword, token: tokenRef.current });
-            console.log(confirmPassword);
-            setMessage(response.data.message);
+            console.log(response);
+            setMessage('Password Reset Successfulll');
 
         } catch (error) {
             setMessage(error.response.data.message);
@@ -66,11 +66,12 @@ function ResetPassword() {
                     <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
  
                 </div>
-                    <button className='registerbtn' type="submit">Reset Password</button>
+                    <button className='loginbtn' type="submit">Reset Password</button>
                
             </form>
 
-            {message && <p>{message}</p>}
+                {message && <div style={{ left: '5px', marginTop: '10px' }}>{message}</div>}
+                
         </div></div>
     );
 }
