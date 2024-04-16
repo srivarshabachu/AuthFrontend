@@ -43,23 +43,25 @@ const Forgotpassword = () => {
     };
 
     return (
-        <div className='container'>
+        <div className='fpcontainer'>
             <div className='header'><div className='text'></div></div>
             <form onSubmit={handleSubmit}>
                 <div className='inputs'>
                     <label>Enter your Email:</label>
-                    <input
-                        type="email"
-                        name="Email"
-                        value={Email}
-                        onChange={handleChange}
+                <input
+                    type="email"
+                    name="Email"
+                    value={Email}
+                    onChange={handleChange}
                     />
+                    
                     <span style={{ color: 'red' }}>{errors.Email}</span>
-                </div>
+                </div> 
                 <div>
                     <button type="submit" className='registerbtn'>Send</button>
                 </div>
             </form>
+            {message && <div style={{ marginTop: '10px' }}>{message}</div>}
         </div>
     );
 

@@ -1,17 +1,58 @@
 .container {
     display: flex;
     flex-direction: column;
-    margin: auto;
-    margin-top: 150px;
-    margin-left: 400px;
-    margin-right: 400px;
     padding: 30px;
-    width: '100%';
-    height: '100%';
-    background-color: rgba(255, 255, 255, 0.65);
-    position: relative;
+    width: 300px;
+    height: 370px;
 }
-
+.fpcontainer{
+    display: flex;
+        flex-direction: column;
+        padding: 20px;
+        width: 400px;
+        height: 200px;
+        margin: auto;
+        margin-top: 150px;
+        margin-left: 400px;
+        margin-right: 400px;
+        background-color: rgba(255, 255, 255, 0.65);
+        position: relative;
+}
+.fpcontainer>*{
+padding: 10px;
+}
+.pagecontainer{
+    display: flex;
+        flex-direction: column;
+        padding: 30px;
+        width: 400px;
+        height: 400px;
+        margin: auto;
+            margin-top: 150px;
+            margin-left: 400px;
+            margin-right: 400px;
+            background-color: rgba(255, 255, 255, 0.65);
+            position: relative;
+}
+.body{
+    display: flex;
+    flex-direction: row;
+        margin: auto;
+            margin-top: 150px;
+            margin-left: 300px;
+            margin-right: 300px;
+                background-color: rgba(255, 255, 255, 0.65);
+                    position: relative;
+}
+.content{
+    width: 230px;
+    padding: 50px;
+    margin: auto;
+        margin-top: 50px;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 18px;
+        border-right: 2px dashed grey;
+}
 .header {
     display: flex;
     flex-direction: column;
@@ -31,7 +72,9 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding-bottom: 35px;
+    padding-bottom: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                font-size: 18px;
 }
 
 .inputs>* {
@@ -49,7 +92,7 @@
 
 .registerbtn {
     position: absolute;
-    right: 200px;
+    right: 170px;
     bottom: 20px;
     background-color: #94dfe2;
     color: white;

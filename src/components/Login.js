@@ -62,7 +62,7 @@ const Login = () => {
             })
     };
     return (
-        <div className='container'>
+        <div className='pagecontainer'>
             <div className='header'><div className='text'>Login</div></div>
             <form onSubmit={handleSubmit}>
                 <div className='inputs'>

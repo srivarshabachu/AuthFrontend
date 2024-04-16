@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
+import './styles.css'
 function ResetPassword() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,25 +36,42 @@ function ResetPassword() {
     };
 
     return (
-        <div>
+        <div className='body'>
+         <div className='content'>
+                Password should have at least
+                <ul>
+                    <li>8 characters</li>
+                    <li>one uppercase letter [A - Z]</li>
+                    <li>one lowercase letter [a - z]</li>
+                    <li>one digit [0 - 9]</li>
+                    <li>one character which isn't a digit or a letter</li>
+                </ul>
+                
+            </div>
+        <div className='container'>
             <h2>Reset Password</h2>
             <form onSubmit={handleSubmit}>
+                <div className='inputs'>
+                    <label>
+                        Email:
+                    </label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <label>
                     New Password:
+                    </label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </label>
                 <label>
                     Confirm Password:
+                    </label>
                     <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                </label>
-                <label>
-                    Email:
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </label>
-                <button type="submit">Reset Password</button>
+ 
+                </div>
+                    <button className='registerbtn' type="submit">Reset Password</button>
+               
             </form>
+
             {message && <p>{message}</p>}
-        </div>
+        </div></div>
     );
 }
 

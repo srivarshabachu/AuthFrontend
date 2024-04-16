@@ -6,6 +6,7 @@ import Forgotpassword from './components/forgotpassword';
 import Login from './components/Login';
 import Otp from './components/Otpsent';
 import ResetPassword from './components/resetpassword';
+import Emailverified from './components/Emailverified';
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/Reset-Password" element={< ResetPassword />} />
         <Route path="/otp/:username" element={<Otp />} />
+        <Route path="/Emailverified" element={<Emailverified />} />
       </Routes>
     </Router>
   );

@@ -74,6 +74,7 @@ const Register = () => {
                 .then((response) => {
                     console.log(response)
                     console.log('Form submitted:', formData);
+                    
                 })
                 .catch((err) => {
                     console.log("error is ", err);
@@ -84,11 +85,22 @@ const Register = () => {
         }
     };
     return (
+        <div className='body'>
+            <div className='content'>
+                Password should have at least
+                <ul>
+                    <li>8 characters</li>
+                    <li>one uppercase letter [A - Z]</li>
+                    <li>one lowercase letter [a - z]</li>
+                    <li>one digit [0 - 9]</li>
+                    <li>one character which isn't a digit or a letter</li>
+                </ul>
+                
+            </div>
         <div className='container'>
             <div className='header'><div className='text'>Registration Form</div></div>
             <form onSubmit={handleSubmit}>
                 <div className='inputs'>
-
                     <label>Username:</label>
                     <input
                         type="text"
@@ -97,7 +109,6 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <span style={{ color: 'red' }}>{errors.Username}</span>
-
                     <label>Email:</label>
                     <input
                         type="email"
@@ -115,13 +126,12 @@ const Register = () => {
                         onChange={handleChange}
                     />
                     <span style={{ color: 'red' }}>{errors.Password}</span>
-
                 </div>
                 <div>
                     <button type="submit" className='registerbtn'>Register</button>
                 </div>
-
             </form>
+            </div>
         </div>
     )
 }
