@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Main from './components/main';
 import Register from './components/register';
 import Forgotpassword from './components/forgotpassword';
 import Login from './components/Login';
 import Otp from './components/Otpsent';
 import ResetPassword from './components/resetpassword';
 import Emailverified from './components/Emailverified';
+import Profile from './components/Profile';
 function App() {
   return (
     <Router>
@@ -17,6 +17,7 @@ function App() {
         <Route path="/Reset-Password" element={< ResetPassword />} />
         <Route path="/otp/:username" element={<Otp />} />
         <Route path="/Emailverified" element={<Emailverified />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </Router>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './styles.css';
-
+import './styles.css'
 const Otp = () => {
     const { username } = useParams();
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         Username: username,
         Otp: ''
@@ -44,15 +44,19 @@ const Otp = () => {
                 .then((response) => {
                     console.log(response);
                     console.log('Form submitted:', formData);
+                     navigate('/Profile'); 
                 })
-                .catch((err) => {
-                    console.log("error is ", err);
+                .catch((error) => {
+                    if (error.response.status === 400) {
+                        setMessage('Invalid OTP!');
+                    }
+                    console.log("error is ", error);
                 });
         }
     };
 
     return (
-        <div className='container'>
+        <div className='pagecontainer'>
             <div className='header'><div className='text'>Otp sent successfully to your account</div></div>
             <form onSubmit={handleSubmit}>
                 <div className='inputs'>
@@ -66,10 +70,11 @@ const Otp = () => {
                     <span style={{ color: 'red' }}>{errors.Otp}</span>
                 </div>
                 <div className='bottom'>
-                    <button type="submit" className='registerbtn'>Submit</button>
+                    <button type="submit" className='loginbtn'>Submit</button>
                 </div>
-            </form>
-        </div>
+                <p style={{ color: 'red', marginTop: '0px' }}>{message}</p>
+                </form>
+            </div>
     );
 };
 

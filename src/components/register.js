@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios'
-import './styles.css'
+import axios from 'axios';
+import './styles.css';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
+    const navigate = useNavigate();
     const { role } = useParams();
     const [message, setMessage] = useState('');
-    console.log({ role })
     const [formData, setFormData] = useState({
         Username: '',
         Email: '',
@@ -25,65 +26,40 @@ const Register = () => {
             [name]: value
         });
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         let formIsValid = true;
         const newErrors = { ...errors };
 
-        // Username validation
-        if (!formData.Username.trim()) {
-            newErrors.Username = 'Username is required';
-            formIsValid = false;
-        } else {
-            newErrors.Username = '';
-            // Email validation
-            if (!formData.Email.trim()) {
-                newErrors.Email = 'Email is required';
-                formIsValid = false;
-            } else if (!/\S+@\S+\.\S+/.test(formData.Email)) {
-                newErrors.Email = 'Email is invalid';
-                formIsValid = false;
-            } else {
-                newErrors.Email = '';
-                // Password validation
-                if (!formData.Password.trim()) {
-                    newErrors.Password = 'Password is required';
-                    formIsValid = false;
-                } else {
-                    newErrors.Password = '';
-                }
-            }
-        }
+        // Your validation logic goes here...
+
         if (!formIsValid) {
             setErrors(newErrors);
+            return; // Stop form submission if validation fails
         }
 
-        if (role === "Admin") {
-            axios.post("https://localhost:7235/api/Authentication/Register?role=Admin", formData)
-                .then((response) => {
-                    console.log(response)
-                    console.log('Form submitted:', formData);
-                })
-                .catch((err) => {
-                    console.log("error is ", err);
-                })
-        }
-        else if (role === "User") {
-            axios.post("https://localhost:7235/api/Authentication/Register?role=User", formData)
-                .then((response) => {
-                    console.log(response)
-                    console.log('Form submitted:', formData);
-
-                })
-                .catch((err) => {
-                    console.log("error is ", err);
-                })
-            setMessage('Password Reset Successfulll');
-        }
-        else {
-            console.log("Select a valid role")
-        }
+        axios.post(`https://localhost:7235/api/Authentication/Register?role=${role}`, formData)
+            .then((response) => {
+                console.log(response);
+                console.log('Form submitted:', formData);
+                setMessage(`${role} Registration Successful`);
+                navigate('/Profile')
+            })
+            .catch((error) => {
+                if (error.response.status === 403) {
+                    setMessage('User already exists!');
+                } else {
+                    console.error('Error occurred:', error);
+                    setMessage('Verify the details again');
+                }
+            });
     };
+
+    const handleLoginClick = () => {
+        navigate('/');
+    };
+
     return (
         <div className='body'>
             <div className='content'>
@@ -95,7 +71,6 @@ const Register = () => {
                     <li>one digit [0 - 9]</li>
                     <li>one character which isn't a digit or a letter</li>
                 </ul>
-
             </div>
             <div className='container'>
                 <div className='header'><div className='text'>{role} Registration Form</div></div>
@@ -127,13 +102,23 @@ const Register = () => {
                         />
                         <span style={{ color: 'red' }}>{errors.Password}</span>
                     </div>
-                    <div>
-                        <button type="submit" className='registerbtn'>Register</button>
+                    {message && (
+                        <div className='msg'>
+                            <p style={{ marginTop: '0px' }}>{message}</p>
+                            {message === 'User already exists!' && (
+                                <button onClick={handleLoginClick} className='loginbtn'>Login</button>
+                            )}
+                        </div>
+                    )}
+                    <div className='msg'>
+                        {!message && <button type="submit" className='registerbtn'>Register</button>}
+                        {message === 'Verify the details again' && <button type="submit" className='registerbtn'>Register</button>}
                     </div>
+
                 </form>
-                {message && <div style={{ left: '5px', marginTop: '10px' }}>{message}</div>}
             </div>
         </div>
     )
 }
-export default Register
+
+export default Register;
