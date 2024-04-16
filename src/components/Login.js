@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 import './styles.css'
+import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
 const Login = () => {
-
-   const { role } = useParams();
+    const navigate = useNavigate();
+    const { role } = useParams();
     console.log({ role })
     const [formData, setFormData] = useState({
         Username: '',
@@ -47,14 +49,17 @@ const Login = () => {
         if (!formIsValid) {
             setErrors(newErrors);
         }
-            axios.post("https://localhost:7235/api/Authentication/Login", formData)
-                .then((response) => {
-                    console.log(response)
-                    console.log('Form submitted:', formData);
-                })
-                .catch((err) => {
-                    console.log("error is ", err);
-                })
+        axios.post("https://localhost:7235/api/Authentication/Login", formData)
+            .then((response) => {
+                console.log(response)
+                console.log('Form submitted:', formData);
+                if (true) {
+                    navigate('/otp/' + formData.Username);
+                }
+            })
+            .catch((err) => {
+                console.log("error is ", err);
+            })
     };
     return (
         <div className='container'>
@@ -80,13 +85,14 @@ const Login = () => {
                     <span style={{ color: 'red' }}>{errors.Password}</span>
 
                 </div>
-                <div>
+                <div className='bottom'>
+                    <Link to="/forgotpassword">Forgot Password!!</Link>
                     <button type="submit" className='registerbtn'>Login</button>
                 </div>
 
             </form>
         </div>
-  )
+    )
 }
 
 export default Login

@@ -1,83 +1,61 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams to extract URL parameters
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-const ResetPassword = () => {
-    const { token } = useParams(); // Extract token from URL params
+function ResetPassword() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
+    const tokenRef = useRef(null);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === 'password') {
-            setPassword(value);
-        } else if (name === 'confirmPassword') {
-            setConfirmPassword(value);
-        }
-        setErrors({}); // Clear errors when user starts typing
-        setSuccessMessage(''); // Clear success message if exists
-    };
+    useEffect(() => {
+        // Function to extract token from URL
+        const getTokenFromURL = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            // Store the token in the ref
+            tokenRef.current = token;
+            // Do something with the token if needed
+            console.log('Token from URL:', tokenRef.current);
+        };
 
-    const handleSubmit = (e) => {
+        // Call the function when the component mounts
+        getTokenFromURL();
+    }, []);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const response = await axios.post('https://localhost:7235/api/Authentication/Reset-Password', { email, password, confirmPassword, token: tokenRef.current });
+            console.log(confirmPassword);
+            setMessage(response.data.message);
 
-        // Password validation
-        if (!password) {
-            setErrors({ password: 'Password is required' });
-            return;
-        } else if (password !== confirmPassword) {
-            setErrors({ confirmPassword: 'Passwords do not match' });
-            return;
+        } catch (error) {
+            setMessage(error.response.data.message);
         }
-
-        axios.put(`https://localhost:7235/api/Authentication/ResetPassword?token=${token}`, {
-            password,
-        })
-            .then((response) => {
-                setSuccessMessage('Password reset successful. You can now login with your new password.');
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.message) {
-                    setErrors({ password: error.response.data.message });
-                } else {
-                    setErrors({ password: 'An error occurred. Please try again later.' });
-                }
-            });
     };
 
     return (
-        <div className='container'>
-            <div className='header'><div className='text'>Reset Password</div></div>
+        <div>
+            <h2>Reset Password</h2>
             <form onSubmit={handleSubmit}>
-                <div className='inputs'>
-                    <label>New Password:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                    <span style={{ color: 'red' }}>{errors.password}</span>
-                </div>
-                <div className='inputs'>
-                    <label>Confirm Password:</label>
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleChange}
-                    />
-                    <span style={{ color: 'red' }}>{errors.confirmPassword}</span>
-                </div>
-                <div>
-                    <button type="submit" className='submitBtn'>Reset Password</button>
-                </div>
-                {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
+                <label>
+                    New Password:
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                </label>
+                <label>
+                    Confirm Password:
+                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                </label>
+                <label>
+                    Email:
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </label>
+                <button type="submit">Reset Password</button>
             </form>
+            {message && <p>{message}</p>}
         </div>
-    )
+    );
 }
 
 export default ResetPassword;

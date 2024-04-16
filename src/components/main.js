@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 const Main = () => {
     return (
         <>
-            HIIIII
             <Link to="/">
                 <div>Main</div>
             </Link>

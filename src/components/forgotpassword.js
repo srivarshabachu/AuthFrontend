@@ -1,93 +1,68 @@
 import React, { useState } from 'react';
+import axios from 'axios'
+const Forgotpassword = () => {
+    const [Email, setEmail] = useState("");
+    const [message, setMessage] = useState('');
 
-// Mock function to simulate sending reset link via API
-const sendResetLink = async (email) => {
-    // Simulate sending reset link via API
-    const response = await fetch('/api/reset-password', {
-        method: 'POST',
-        body: JSON.stringify({ email }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+    const [errors, setErrors] = useState({
+        Email: '',
     });
 
-    if (response.ok) {
-        // Reset link sent successfully
-        return true;
-    } else {
-        // Handle error
-        console.error('Failed to send reset link');
-        return false;
-    }
-};
-
-// Mock function to simulate resetting password via API
-const resetPassword = async (token, newPassword) => {
-    // Simulate resetting password via API
-    const response = await fetch('/api/reset-password', {
-        method: 'POST',
-        body: JSON.stringify({ token, newPassword }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (response.ok) {
-        // Password reset successfully
-        return true;
-    } else {
-        // Handle error
-        console.error('Failed to reset password');
-        return false;
-    }
-};
-
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
-    const [resetSent, setResetSent] = useState(false);
-    const [resetToken, setResetToken] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [resetSuccess, setResetSuccess] = useState(false);
-
-    const handleSendResetLink = async () => {
-        const sent = await sendResetLink(email);
-        if (sent) {
-            setResetSent(true);
-        }
+    const handleChange = (e) => {
+        setEmail(e.target.value); // Update the email state
     };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let formIsValid = true;
+        const newErrors = { ...errors };
 
-    const handleResetPassword = async () => {
-        const reset = await resetPassword(resetToken, newPassword);
-        if (reset) {
-            setResetSuccess(true);
+        // Email validation
+        if (!Email.trim()) {
+            newErrors.Email = 'Email is required';
+            formIsValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(Email)) {
+            newErrors.Email = 'Email is invalid';
+            formIsValid = false;
+        } else {
+            newErrors.Email = '';
         }
+        if (!formIsValid) {
+            setErrors(newErrors);
+            return; // Stop form submission if validation fails
+        }
+
+        axios.post("https://localhost:7235/api/Authentication/ForgotPassword?email=" + encodeURIComponent(Email))
+            .then((response) => {
+                console.log(response);
+                // Update message state to display success message
+                setMessage('We have successfully sent a reset link to your email');
+            })
+            .catch((err) => {
+                console.log("error is ", err);
+            });
     };
 
     return (
-        <div>
-            {!resetSent && (
-                <div>
-                    <label>Email:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <button onClick={handleSendResetLink}>Send Reset Link</button>
+        <div className='container'>
+            <div className='header'><div className='text'></div></div>
+            <form onSubmit={handleSubmit}>
+                <div className='inputs'>
+                    <label>Enter your Email:</label>
+                    <input
+                        type="email"
+                        name="Email"
+                        value={Email}
+                        onChange={handleChange}
+                    />
+                    <span style={{ color: 'red' }}>{errors.Email}</span>
                 </div>
-            )}
-
-            {resetSent && !resetSuccess && (
                 <div>
-                    <label>New Password:</label>
-                    <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                    <button onClick={handleResetPassword}>Reset Password</button>
+                    <button type="submit" className='registerbtn'>Send</button>
                 </div>
-            )}
-
-            {resetSuccess && (
-                <div>
-                    <p>Password reset successfully!</p>
-                </div>
-            )}
+            </form>
         </div>
     );
-};
 
-export default ForgotPassword;
+}
+
+export default Forgotpassword

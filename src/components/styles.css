@@ -61,3 +61,10 @@
     font-size: medium;
     color: black;
 }
+.bottom{
+    display:flex;
+    flex-direction: row;
+}
+.bottom .registerbtn{
+    right: 30px;
+}
