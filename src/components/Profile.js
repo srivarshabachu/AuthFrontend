@@ -56,7 +56,7 @@ const Profile = () => {
 
   return (
     <section style={{ fontFamily: 'Gill Sans' }}>
-      <form className="max-w-md mx-auto" onSubmit={handleProfileInfoUpdate}>
+      <form className="max-w-md mx-20" onSubmit={handleProfileInfoUpdate}>
         <img src alt="Profile" style={{ maxWidth: '100px', height: 'auto', width: '100px' }} />
         <div>
           <div className="p-10 rounded-lgtext-black">
@@ -85,7 +85,14 @@ const Profile = () => {
             </div>
             <input type="text" placeholder="Country" value={profileData.country} onChange={ev => setProfileData(prevState => ({ ...prevState, country: ev.target.value }))} />
 
-            <button type='submit'>Save</button>
+            <div class="flex flex-col items-center">
+              <div class="mb-4">
+                <button type="submit" class="bg-blue-500 text-white  py-2 px-4 rounded">
+                  Save
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </form>

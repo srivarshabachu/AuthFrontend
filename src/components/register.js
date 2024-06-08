@@ -47,8 +47,11 @@ const Register = () => {
                 navigate(`/Profile/${formData.Username}`); // Navigate to profile with username appended
             })
             .catch((error) => {
-                if (error.response.status === 403) {
-                    setMessage('User already exists!');
+                if (error.response.status === 409) {
+                    setMessage('UserName already exists! Try another');
+                }
+                else if (error.response.status === 403) {
+                    setMessage('User already exists! Login');
                 } else {
                     console.error('Error occurred:', error);
                     setMessage('Verify the details again');
@@ -61,10 +64,10 @@ const Register = () => {
     };
 
     return (
-        <div className='body'>
-            <div className='content'>
-                Password should have at least
-                <ul>
+        <div className='flex' >
+            <div className='w-600 h-auto p-20 mx-auto mt-50 font-sans text-xl rounded-lg bg-gray-200 bg-opacity-50'>
+                <p>Password should have at least</p>
+                <ul className="list-disc pl-6">
                     <li>8 characters</li>
                     <li>one uppercase letter [A - Z]</li>
                     <li>one lowercase letter [a - z]</li>
@@ -72,10 +75,12 @@ const Register = () => {
                     <li>one character which isn't a digit or a letter</li>
                 </ul>
             </div>
+
+
             <div className='container'>
-                <div className='header'><div className='text'>Registration Form</div></div>
+                <div className='header'><div className='text'>Create Account</div></div>
                 <form onSubmit={handleSubmit}>
-                    <div className='inputs'>
+                    <div>
                         <label>Username:</label>
                         <input
                             type="text"
@@ -103,15 +108,26 @@ const Register = () => {
                         <span style={{ color: 'red' }}>{errors.Password}</span>
                     </div>
                     {message && (
-                        <div className='msg'>
-                            <p style={{ marginTop: '0px' }}>{message}</p>
-                            {message === 'User already exists!' && (
-                                <button onClick={handleLoginClick} className='loginbtn'>Login</button>
-                            )}
-                        </div>
+                        <>
+                            <p className='primary'>{message}</p>
+                            <div className='msg'>
+                               
+                                
+                                {message === 'User already exists! Login' && (
+                                    <button type="submit" onClick={handleLoginClick} className='loginbtn'>Login</button>
+                                )}
+                            </div>
+                            <div className='msg'>
+                               
+
+                                {message === 'UserName already exists! Try another' && (
+                                    <button type="submit" className='registerbtn'>SignIn</button>
+                                )}
+                            </div>
+                           </>
                     )}
                     <div className='msg'>
-                        {!message && <button type="submit" className='registerbtn'>Register</button>}
+                        {!message && <button type="submit" className='registerbtn'>SignIn</button>}
                         {message === 'Verify the details again' && <button type="submit" className='registerbtn'>Register</button>}
                     </div>
                 </form>

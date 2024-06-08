@@ -7,7 +7,8 @@ import { useParams } from 'react-router-dom';
 const Login = () => {
     const navigate = useNavigate();
     const { role } = useParams();
-    console.log({ role })
+    const [twoFactor, setTwoFactor] = useState(false);
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         Username: '',
         Password: ''
@@ -51,31 +52,35 @@ const Login = () => {
             setErrors(newErrors);
         }
         var token = null;
-        const response = axios.post("https://localhost:7235/api/Authentication/Login", formData)
+        
+        axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
-               token = response.data.response.accessToken.token
-                console.log()
-                if (true) {
+                console.log(response.data.message);
+
+                if (response.data.message.includes('OTP')) {
+                    setTwoFactor(true);
+                    navigate('/Otp/' + formData.Username);
+                } else {
                     navigate('/Profile/' + formData.Username);
                 }
             })
             .catch((err) => {
                 console.log("error is ", err);
-            })
+            });
         
     };
     return (
-        <div className='pagecontainer'>
-            <div className='header'><div className='text'>Login</div></div>
+        <div className='pagecontainer'  style={{ fontFamily: 'Gill Sans' }}>
+           
             <form onSubmit={handleSubmit}>
-                <div className='inputs'>
-
+                <div className=''>
                     <label>Username:</label>
                     <input
                         type="text"
                         name="Username"
                         value={formData.Username}
                         onChange={handleChange}
+                        placeholder='Enter your UserName'
                     />
                     <span style={{ color: 'red' }}>{errors.Username}</span>
                     <label>Password:</label>
@@ -84,23 +89,33 @@ const Login = () => {
                         name="Password"
                         value={formData.Password}
                         onChange={handleChange}
+                        placeholder='Enter your Password'
                     />
                     <span style={{ color: 'red' }}>{errors.Password}</span>
 
                 </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "15px" }}>
-                    <div>New to our app?? ---&gt;</div>
-                    <div>
-                        <Link to="/register/User">Register</Link>
+                
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div className="flex flex-col items-center">
+                        <div className="mb-4">
+                            <button type="submit" className="">
+                                Login
+                            </button>
+                        </div>
+                        <div className="flex justify-between w-full">
+                            <div >
+                                <Link to="/forgotpassword" className="primary  hover:text-blue-700">
+                                    Forgot Password!!
+                                </Link>
+                            </div>
+                            <div >
+                                <Link to="/register/User" className="primary hover:text-blue-700">
+                                    Register
+                                </Link>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className='bottom' style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div style={{ marginBottom: "10px" }}>
-                        <button type="submit" className='loginbtn'>Login</button>
-                    </div>
-                    <div style={{ paddingBottom: "20px" }}>
-                        <Link to="/forgotpassword">Forgot Password!!</Link>
-                    </div>
+
                 </div>
             </form>
         </div>

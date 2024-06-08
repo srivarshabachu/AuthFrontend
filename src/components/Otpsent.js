@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './styles.css'
+import './styles.css';
+
 const Otp = () => {
     const { username } = useParams();
-    const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+    console.log(username)
     const [formData, setFormData] = useState({
         Username: username,
         Otp: ''
     });
-    const navigate = useNavigate();
 
     const [errors, setErrors] = useState({
-        Username: '',
         Otp: ''
     });
+
+    const [message, setMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,7 +26,7 @@ const Otp = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         let formIsValid = true;
         const newErrors = { ...errors };
@@ -40,41 +42,51 @@ const Otp = () => {
         if (!formIsValid) {
             setErrors(newErrors);
         } else {
-            axios.post(`https://localhost:7235/api/Authentication/Login-2FA?code=${formData.Otp}&username=${formData.Username}`)
+            axios.post(`https://localhost:7235/api/Authentication/Login-2FA?code=${formData.Otp}&username=${username}`)
                 .then((response) => {
                     console.log(response);
                     console.log('Form submitted:', formData);
-                     navigate('/Profile'); 
+                    navigate('/Profile/' + username);
                 })
                 .catch((error) => {
-                    if (error.response.status === 400) {
+                    if (error.response.status === 404) {
                         setMessage('Invalid OTP!');
                     }
                     console.log("error is ", error);
                 });
         }
+
     };
 
     return (
-        <div className='pagecontainer'>
-            <div className='header'><div className='text'>Otp sent successfully to your account</div></div>
+        <div className='pagecontainer' style={{ fontFamily: 'Gill Sans' }}>
+            <div className='header'>
+                <div className='text'>Otp sent to your account</div>
+            </div>
             <form onSubmit={handleSubmit}>
-                <div className='inputs'>
-                    <label>Enter the OTP</label>
+                <div>
+                    <label>Enter the OTP :</label>
                     <input
                         type="text"
                         name="Otp"
                         value={formData.Otp}
                         onChange={handleChange}
                     />
-                    <span style={{ color: 'red' }}>{errors.Otp}</span>
+                    <span className='primary'>{errors.Otp}</span>
                 </div>
-                <div className='bottom'>
-                    <button type="submit" className='loginbtn'>Submit</button>
+                <p className='primary'>{message}</p>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div className="flex flex-col items-center">
+                        <div className="mb-4">
+                            <button type="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-                <p style={{ color: 'red', marginTop: '0px' }}>{message}</p>
-                </form>
-            </div>
+            </form>
+        </div>
     );
 };
 
