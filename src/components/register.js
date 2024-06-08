@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './styles.css';
-import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+
 const Register = () => {
     const navigate = useNavigate();
-    const { role } = useParams();
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         Username: '',
         Email: '',
-        Password: ''
+        Password: '',
+        roles: ['User']
     });
 
     const [errors, setErrors] = useState({
-        Email: "",
-        Username: "",
-        Password: ""
+        Email: '',
+        Username: '',
+        Password: ''
     });
 
     const handleChange = (e) => {
@@ -39,12 +39,12 @@ const Register = () => {
             return; // Stop form submission if validation fails
         }
 
-        axios.post(`https://localhost:7235/api/Authentication/Register?role=${role}`, formData)
+        axios.post(`https://localhost:7235/api/Authentication/Register`, formData)
             .then((response) => {
                 console.log(response);
                 console.log('Form submitted:', formData);
-                setMessage(`${role} Registration Successful`);
-                navigate('/Profile')
+                setMessage(`Registration Successful for ${formData.Username}`);
+                navigate(`/Profile/${formData.Username}`); // Navigate to profile with username appended
             })
             .catch((error) => {
                 if (error.response.status === 403) {
@@ -73,7 +73,7 @@ const Register = () => {
                 </ul>
             </div>
             <div className='container'>
-                <div className='header'><div className='text'>{role} Registration Form</div></div>
+                <div className='header'><div className='text'>Registration Form</div></div>
                 <form onSubmit={handleSubmit}>
                     <div className='inputs'>
                         <label>Username:</label>
@@ -114,7 +114,6 @@ const Register = () => {
                         {!message && <button type="submit" className='registerbtn'>Register</button>}
                         {message === 'Verify the details again' && <button type="submit" className='registerbtn'>Register</button>}
                     </div>
-
                 </form>
             </div>
         </div>

@@ -7,6 +7,7 @@ import Otp from './components/Otpsent';
 import ResetPassword from './components/resetpassword';
 import Emailverified from './components/Emailverified';
 import Profile from './components/Profile';
+import './global.css'
 function App() {
   return (
     <Router>
@@ -17,7 +18,7 @@ function App() {
         <Route path="/Reset-Password" element={< ResetPassword />} />
         <Route path="/otp/:username" element={<Otp />} />
         <Route path="/Emailverified" element={<Emailverified />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Profile/:username" element={<Profile />} />
       </Routes>
     </Router>
   );

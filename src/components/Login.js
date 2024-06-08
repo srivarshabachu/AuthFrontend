@@ -46,21 +46,23 @@ const Login = () => {
         }
 
 
-        
+
         if (!formIsValid) {
             setErrors(newErrors);
         }
-        axios.post("https://localhost:7235/api/Authentication/Login", formData)
+        var token = null;
+        const response = axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
-                console.log(response)
-                console.log('Form submitted:', formData);
+               token = response.data.response.accessToken.token
+                console.log()
                 if (true) {
-                    navigate('/otp/' + formData.Username);
+                    navigate('/Profile/' + formData.Username);
                 }
             })
             .catch((err) => {
                 console.log("error is ", err);
             })
+        
     };
     return (
         <div className='pagecontainer'>

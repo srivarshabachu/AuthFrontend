@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.listfont {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: larger;
+}
+
+.list {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    color: #4b6584;
+    font-size: larger;
+}
+
+.listfont>p {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+section.hero {
+    @apply grid;
+    grid-template-columns: .7fr .7fr;
+}
+
+select,
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="text"] {
+    display: block;
+    margin: auto;
+    background-color: #c23616;
+    color: #fff;
+    padding: 10px 40px;
+    border-radius: 9999px;
+    text-align: center;
+    font-size: large;
+    align-items: center;
+    width: 45%;
+    @apply block my-4 rounded-2xl;
+    @apply block border p-2 bg-gray-200 border-0 text-gray-500;
+}
+
+input[type="email"]:disabled,
+input[type="tel"]:disabled,
+input[type="password"]:disabled,
+input[type="text"]:disabled {
+    @apply bg-gray-300 border-0 cursor-not-allowed text-gray-100;
+}
+
+.grow>select,
+input[type="email"],
+input[type="text"] {
+    background-color: #c23616;
+    color: #fff;
+    padding: 10px 40px;
+    font-size: large;
+    width: 100%;
+    @apply block my-4 rounded-2xl;
+    @apply block border p-2 bg-gray-200 border-0 text-gray-500;
+}
+
+button {
+    text: block;
+    border: black;
+
+}
+
+button[type="submit"] {
+    display: block;
+    margin: auto;
+    font-size: medium;
+    background-color: #c23616;
+    color: #fff;
+    padding: 10px 50px;
+    border-radius: 9999px;
+    text-align: center;
+    font-size: large;
+    align-items: center;
+}
+
