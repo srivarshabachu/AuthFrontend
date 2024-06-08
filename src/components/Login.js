@@ -117,6 +117,14 @@ const Login = () => {
                     </div>
 
                 </div>
+                <form method='POST' action={`https://localhost:7235/api/authentication/google-login`} >
+                    <button
+                        type='submit'
+                        name='provider'
+                        value='Google'>
+                        Google
+                    </button>
+                </form>
             </form>
         </div>
     )

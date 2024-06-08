@@ -14,7 +14,7 @@ const Profile = () => {
     pincode: '500090',
     isPhysicallyChallenged: false
   });
-
+  console.log(username);
   useEffect(() => {
     axios.get(`https://localhost:7235/api/Authentication/Get-Profile-Info?username=${username}`)
       .then(response => {
