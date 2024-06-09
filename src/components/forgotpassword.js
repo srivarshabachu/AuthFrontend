@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 const Forgotpassword = () => {
     const [Email, setEmail] = useState("");
     const [message, setMessage] = useState('');
@@ -38,29 +39,50 @@ const Forgotpassword = () => {
                 setMessage('We have successfully sent a reset link to your email');
             })
             .catch((err) => {
+                setMessage('User does not exist')
                 console.log("error is ", err);
             });
     };
 
     return (
-        <div className='fpcontainer'>
+        <div className='pagecontainer'>
             <form onSubmit={handleSubmit}>
-                <div className='inputs'>
+                <div className=''>
                     <label>Enter your Email:</label>
-                <input
-                    type="email"
-                    name="Email"
-                    value={Email}
-                    onChange={handleChange}
+                    <input
+                        type="email"
+                        name="Email"
+                        value={Email}
+                        onChange={handleChange}
                     />
-                    
+
                     <span style={{ color: 'red' }}>{errors.Email}</span>
-                </div> 
-                <div>
-                    <button type="submit" className='loginbtn'>Send</button>
                 </div>
+                <div className='msg'>
+                    <span style={{ color: '#c23616' }}>{message}</span>
+                    <button type="submit" className='registerbtn'>Send</button>
+                </div>
+                {message === 'User does not exist' && (
+                    <div className="flex justify-between w-full">
+                        <div >
+                            <form method='POST' action={`https://localhost:7235/api/authentication/google-login`} >
+                                <button
+                                    name='provider'
+                                    value='Google'>
+                                    Google
+                                </button>
+                            </form>
+                        </div>
+                        <div >
+                            <Link to="/register/User" className="primary hover:text-blue-700">
+                                Register
+                            </Link>
+                        </div>
+                    </div>
+                )}
+                
             </form>
-            {message && <div style={{ marginTop: '10px', padding:'10px'}}>{message}</div>}
+            
         </div>
     );
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './styles.css'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
+import logo from './googlelogo.png'
 const Login = () => {
     const navigate = useNavigate();
     const { role } = useParams();
@@ -52,7 +53,7 @@ const Login = () => {
             setErrors(newErrors);
         }
         var token = null;
-        
+
         axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
                 console.log(response.data.message);
@@ -67,13 +68,14 @@ const Login = () => {
             .catch((err) => {
                 console.log("error is ", err);
             });
-        
+
     };
     return (
-        <div className='pagecontainer'  style={{ fontFamily: 'Gill Sans' }}>
-           
+        <div className='pagecontainer' style={{ fontFamily: 'Gill Sans' }}>
+
             <form onSubmit={handleSubmit}>
                 <div className=''>
+
                     <label>Username:</label>
                     <input
                         type="text"
@@ -82,7 +84,9 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your UserName'
                     />
-                    <span style={{ color: 'red' }}>{errors.Username}</span>
+                    <span style={{ color: '#c23616' }}>{errors.Username}</span>
+</div>
+                <div>
                     <label>Password:</label>
                     <input
                         type="password"
@@ -91,10 +95,10 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your Password'
                     />
-                    <span style={{ color: 'red' }}>{errors.Password}</span>
+                    <span style={{ color: '#c23616' }}>{errors.Password}</span>
 
                 </div>
-                
+
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div className="flex flex-col items-center">
                         <div className="mb-4">
@@ -117,14 +121,19 @@ const Login = () => {
                     </div>
 
                 </div>
-                <form method='POST' action={`https://localhost:7235/api/authentication/google-login`} >
-                    <button
-                        type='submit'
-                        name='provider'
-                        value='Google'>
-                        Google
-                    </button>
-                </form>
+                <div className="flex flex-col items-center py-10 px-10">
+                    <form method="POST" action="https://localhost:7235/api/authentication/google-login" className="flex flex-col items-center border-2 border-gray rounded-lg">
+                        <button
+                            
+                            name="provider"
+                            value="Google"
+                            className="flex items-center text-black py-2 px-4 rounded-md"
+                        >
+                            <img src={logo} width={25} height={20} alt="Google Logo" className="mr-2" />
+                            Login with Google
+                        </button>
+                    </form>
+                </div>
             </form>
         </div>
     )

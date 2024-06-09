@@ -33,7 +33,7 @@ const Register = () => {
         const newErrors = { ...errors };
 
         // Your validation logic goes here...
-
+        
         if (!formIsValid) {
             setErrors(newErrors);
             return; // Stop form submission if validation fails
@@ -64,7 +64,7 @@ const Register = () => {
     };
 
     return (
-        <div className='flex' >
+        <div className='flex py-20 px-40' >
             <div className='w-600 h-auto p-20 mx-auto mt-50 font-sans text-xl rounded-lg bg-gray-200 bg-opacity-50'>
                 <p>Password should have at least</p>
                 <ul className="list-disc pl-6">

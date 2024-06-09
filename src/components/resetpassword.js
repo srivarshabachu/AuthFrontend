@@ -9,7 +9,7 @@ function ResetPassword() {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const tokenRef = useRef(null);
-
+    const [errors, setErrors] = useState({});
     useEffect(() => {
         // Function to extract token from URL
         const getTokenFromURL = () => {
@@ -27,6 +27,28 @@ function ResetPassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const newErrors = {};
+        if (!email) {
+            newErrors.email = 'Email is required';
+            
+        }
+        if (!password) {
+            newErrors.password = 'Password is required';
+           
+        }
+        if (!confirmPassword) {
+            newErrors.confirmPassword = 'Password is required';
+            
+        }
+        if (password !== confirmPassword) {
+            newErrors.passwordMatch = 'Passwords do not match';
+            
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
         try {
             const response = await axios.post('https://localhost:7235/api/Authentication/Reset-Password', { email, password, confirmPassword, token: tokenRef.current });
             console.log(response);
@@ -39,8 +61,8 @@ function ResetPassword() {
     };
 
     return (
-        <div className='body'>
-         <div className='content'>
+        <div className='flex py-20 px-40' style={{ fontFamily: 'Gill Sans' }}>
+            <div className='w-600 h-auto p-20 mx-auto mt-50 font-sans text-xl rounded-lg bg-gray-200 bg-opacity-50'>
                 Password should have at least
                 <ul>
                     <li>8 characters</li>
@@ -52,24 +74,36 @@ function ResetPassword() {
                 
             </div>
         <div className='container'>
-            <h2>Reset Password</h2>
+                <div className='header'><div className='text'>Reset Password</div></div>
             <form onSubmit={handleSubmit}>
-                <div className='inputs'>
+                    <div>
+                        
                     <label>
                         Email:
                     </label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="email" value={email} placeholder='Enter your Email' onChange={(e) => setEmail(e.target.value)} />
+                        {errors.email && <span style={{ color: '#c23616' }}>{errors.email}</span>}
+                    </div>
+                    <div>
                 <label>
                     New Password:
                     </label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <label>
+                        <input type="password" value={password} placeholder='Enter new password' onChange={(e) => setPassword(e.target.value)} />
+                        {errors.password && <span style={{ color: '#c23616' }}>{errors.password}</span>}
+                    
+                    </div>
+                    <div>
+                        <label>
+                            
                     Confirm Password:
                     </label>
-                    <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
- 
+                        <input type="password" value={confirmPassword} placeholder='Confirm your password' onChange={(e) => setConfirmPassword(e.target.value)} />
+                        {errors.confirmPassword && <span style={{ color: '#c23616' }}>{errors.confirmPassword}</span>}
+                        {errors.passwordMatch && <span style={{ color: '#c23616' }}>{errors.passwordMatch}</span>}
                 </div>
-                    <button className='loginbtn' type="submit">Reset Password</button>
+                    <div className='msg'>
+                            <button type="submit" className='registerbtn'>Save</button>
+                    </div>
                
             </form>
                 {message && <div style={{ left: '5px', marginTop: '10px' }}>{message}</div>}
