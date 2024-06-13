@@ -4,7 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import './styles.css'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom';
-import logo from './googlelogo.png'
+import googlelogo from './googlelogo.png'
+import githublogo from './githublogo.png'
+import linkedinlogo from './linkedinlogo.png'
+import toast from 'react-hot-toast';
+import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const navigate = useNavigate();
     const { role } = useParams();
@@ -57,7 +61,7 @@ const Login = () => {
         axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
                 console.log(response.data.message);
-
+                toast.success('Login successful!');
                 if (response.data.message.includes('OTP')) {
                     setTwoFactor(true);
                     navigate('/Otp/' + formData.Username);
@@ -67,11 +71,12 @@ const Login = () => {
             })
             .catch((err) => {
                 console.log("error is ", err);
+                setMessage("User Does not Exist!!")
             });
 
     };
     return (
-        <div className='pagecontainer' style={{ fontFamily: 'Gill Sans' }}>
+        <div className='pagecontainer ' style={{ fontFamily: 'Gill Sans' }}>
 
             <form onSubmit={handleSubmit}>
                 <div className=''>
@@ -85,7 +90,7 @@ const Login = () => {
                         placeholder='Enter your UserName'
                     />
                     <span style={{ color: '#c23616' }}>{errors.Username}</span>
-</div>
+                </div>
                 <div>
                     <label>Password:</label>
                     <input
@@ -107,32 +112,59 @@ const Login = () => {
                             </button>
                         </div>
                         <div className="flex justify-between w-full">
-                            <div >
+                            {message === 'User Does not Exist!!' && (<div >
                                 <Link to="/forgotpassword" className="primary  hover:text-blue-700">
                                     Forgot Password!!
                                 </Link>
-                            </div>
-                            <div >
-                                <Link to="/register/User" className="primary hover:text-blue-700">
-                                    Register
+                            </div>)}
+                            <div className='ml-auto className="flex flex-col items-center border-2 border-black-300 rounded-lg'>
+                                <Link to="/register/User" className="primary hover:text-blue-700 items-center  py-2 px-4 rounded-md">
+                                    Register Here
                                 </Link>
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div className="flex flex-col items-center py-10 px-10">
-                    <form method="POST" action="https://localhost:7235/api/authentication/google-login" className="flex flex-col items-center border-2 border-gray rounded-lg">
-                        <button
-                            
-                            name="provider"
-                            value="Google"
-                            className="flex items-center text-black py-2 px-4 rounded-md"
-                        >
-                            <img src={logo} width={25} height={20} alt="Google Logo" className="mr-2" />
-                            Login with Google
-                        </button>
-                    </form>
+                <div className='flex py-8 px-28'>
+                    <div className="flex ">
+                        <form method="POST" action="https://localhost:7235/api/authentication/google-login" >
+                            <button
+
+                                name="provider"
+                                value="Google"
+                                className="flex items-center text-black py-2 px-4 rounded-md"
+                            >
+                                <img src={googlelogo} width={60} height={60} alt="Google Logo" className="mr-2" />
+
+                            </button>
+                        </form>
+                    </div>
+                    <div className="flex ">
+                        <form method="POST" action="https://localhost:7235/api/Authentication/GitHubLogin" >
+                            <button
+
+                                name="provider"
+                                value="github"
+                                className="flex items-center text-black py-2 px-4 rounded-md"
+                            >
+                                <img src={githublogo} width={60} height={60} alt="Google Logo" className="mr-2" />
+
+                            </button>
+                        </form>
+                    </div>
+                    <div className="flex ">
+                        <form method="POST" action="https://localhost:7235/api/Authentication/LinkedInLogin" >
+                            <button
+
+                                name="provider"
+                                value="linkedin"
+                                className="flex items-center text-black py-2 px-4 rounded-md"
+                            >
+                                <img src={linkedinlogo} width={60} height={60} alt="Google Logo" className="mr-2" />
+
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </form>
         </div>

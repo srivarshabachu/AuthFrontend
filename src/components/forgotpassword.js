@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios'
+import logo from './googlelogo.png'
 import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast';
+import 'react-toastify/dist/ReactToastify.css';
 const Forgotpassword = () => {
     const [Email, setEmail] = useState("");
     const [message, setMessage] = useState('');
@@ -36,9 +39,11 @@ const Forgotpassword = () => {
             .then((response) => {
                 console.log(response);
                 // Update message state to display success message
+                toast.success(`We have successfully sent a reset link to your email`);
                 setMessage('We have successfully sent a reset link to your email');
             })
             .catch((err) => {
+                toast.error(`User does not exist`);
                 setMessage('User does not exist')
                 console.log("error is ", err);
             });
@@ -59,17 +64,19 @@ const Forgotpassword = () => {
                     <span style={{ color: 'red' }}>{errors.Email}</span>
                 </div>
                 <div className='msg'>
-                    <span style={{ color: '#c23616' }}>{message}</span>
+
                     <button type="submit" className='registerbtn'>Send</button>
                 </div>
                 {message === 'User does not exist' && (
                     <div className="flex justify-between w-full">
                         <div >
-                            <form method='POST' action={`https://localhost:7235/api/authentication/google-login`} >
+                            <form method='POST' action={`https://localhost:7235/api/authentication/google-login`} className="flex flex-col items-center border-2 border-gray rounded-lg">
                                 <button
+                                    className="flex items-center text-black py-2 px-4 rounded-md"
                                     name='provider'
                                     value='Google'>
-                                    Google
+                                    <img src={logo} width={25} height={20} alt="Google Logo" className="mr-2" />
+                                    Login with Google
                                 </button>
                             </form>
                         </div>
@@ -77,12 +84,13 @@ const Forgotpassword = () => {
                             <Link to="/register/User" className="primary hover:text-blue-700">
                                 Register
                             </Link>
+
                         </div>
                     </div>
                 )}
-                
+
             </form>
-            
+
         </div>
     );
 
