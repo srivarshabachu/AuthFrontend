@@ -50,7 +50,7 @@ const Forgotpassword = () => {
     };
 
     return (
-        <div className='pagecontainer'>
+        <div className='pagecontainer' style={{ fontFamily: 'Gill Sans' }}>
             <form onSubmit={handleSubmit}>
                 <div className=''>
                     <label>Enter your Email:</label>

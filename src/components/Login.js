@@ -38,12 +38,14 @@ const Login = () => {
 
         // Username validation
         if (!formData.Username.trim()) {
+            toast.error('Username is required')
             newErrors.Username = 'Username is required';
             formIsValid = false;
         } else {
             newErrors.Username = '';
             // Password validation
-            if (!formData.Password.trim()) {
+            if (formIsValid && !formData.Password.trim()) {
+                toast.error('Password is required')
                 newErrors.Password = 'Password is required';
                 formIsValid = false;
             } else {
@@ -60,7 +62,7 @@ const Login = () => {
 
         axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
-                console.log(response.data.message);
+                console.log(response);
                 toast.success('Login successful!');
                 if (response.data.message.includes('OTP')) {
                     setTwoFactor(true);
@@ -70,8 +72,14 @@ const Login = () => {
                 }
             })
             .catch((err) => {
-                console.log("error is ", err);
-                setMessage("User Does not Exist!!")
+                if (formIsValid && err.response.status == 400) {
+                    toast.error('Incorrect Password')
+                }
+                if (formIsValid && err.response.status == 500) {
+                    toast.error('User doesnot exist')
+                }
+                console.log(err.response.status);
+                
             });
 
     };
@@ -89,7 +97,7 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your UserName'
                     />
-                    <span style={{ color: '#c23616' }}>{errors.Username}</span>
+                   
                 </div>
                 <div>
                     <label>Password:</label>
@@ -100,7 +108,7 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your Password'
                     />
-                    <span style={{ color: '#c23616' }}>{errors.Password}</span>
+                   
 
                 </div>
 
@@ -112,14 +120,17 @@ const Login = () => {
                             </button>
                         </div>
                         <div className="flex justify-between w-full">
-                            {message === 'User Does not Exist!!' && (<div >
+                           <div >
                                 <Link to="/forgotpassword" className="primary  hover:text-blue-700">
                                     Forgot Password!!
                                 </Link>
-                            </div>)}
-                            <div className='ml-auto className="flex flex-col items-center border-2 border-black-300 rounded-lg'>
-                                <Link to="/register/User" className="primary hover:text-blue-700 items-center  py-2 px-4 rounded-md">
+                            </div>
+                            <div className="ml-auto flex items-center">
+                                <Link to="/register/User" className="primary hover:text-blue-700 flex items-center py-2 px-4 rounded-md">
                                     Register Here
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-2">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+                                    </svg>
                                 </Link>
                             </div>
                         </div>
