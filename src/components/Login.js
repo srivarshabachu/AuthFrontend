@@ -58,12 +58,17 @@ const Login = () => {
         if (!formIsValid) {
             setErrors(newErrors);
         }
-        var token = null;
 
         axios.post("https://localhost:7235/api/Authentication/Login", formData)
             .then((response) => {
-                console.log(response);
                 toast.success('Login successful!');
+                if (response.data.isSuccess && response.data.response && response.data.response.accessToken) {
+                    const { accessToken, refreshToken } = response.data.response;
+
+                    // Store tokens in localStorage
+                    localStorage.setItem('accessToken', accessToken.token);
+                    localStorage.setItem('refreshToken', refreshToken.token);
+                }
                 if (response.data.message.includes('OTP')) {
                     setTwoFactor(true);
                     navigate('/Otp/' + formData.Username);
@@ -79,7 +84,7 @@ const Login = () => {
                     toast.error('User doesnot exist')
                 }
                 console.log(err.response.status);
-                
+
             });
 
     };
@@ -97,7 +102,7 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your UserName'
                     />
-                   
+
                 </div>
                 <div>
                     <label>Password:</label>
@@ -108,7 +113,7 @@ const Login = () => {
                         onChange={handleChange}
                         placeholder='Enter your Password'
                     />
-                   
+
 
                 </div>
 
@@ -120,7 +125,7 @@ const Login = () => {
                             </button>
                         </div>
                         <div className="flex justify-between w-full">
-                           <div >
+                            <div >
                                 <Link to="/forgotpassword" className="primary  hover:text-blue-700">
                                     Forgot Password!!
                                 </Link>
