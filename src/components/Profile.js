@@ -81,6 +81,7 @@ const Profile = () => {
       try {
         const response = await axios.get(`https://localhost:7235/api/Authentication/user-role?userEmail=${profileData.email}`);
         setRole(response.data);
+        console.log(role);
       } catch (error) {
         console.error('Error fetching role:', error);
       }
@@ -118,12 +119,10 @@ const Profile = () => {
       if (role === 'Admin') {
         await axios.put('https://localhost:7235/api/Authentication/UpdateAdminProfile', extraData, { headers });
       }
-
       const updatedProfile = await jwtInterceptor.get(`https://localhost:7235/api/Authentication/Get-Profile-Info?username=${username}`);
       setProfile(updatedProfile.data);
       setProfileData({
         email: updatedProfile.data.email,
-        dateOfBirth: updatedProfile.data.dateOfBirth,
         city: updatedProfile.data.city,
         country: updatedProfile.data.country,
         phoneNumber: updatedProfile.data.phoneNumber,

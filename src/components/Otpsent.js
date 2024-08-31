@@ -42,7 +42,8 @@ const Otp = () => {
         if (!formIsValid) {
             setErrors(newErrors);
         } else {
-            axios.post(`https://localhost:7235/api/Authentication/Login-2FA?code=${formData.Otp}&username=${username}`)
+            console.log(formData)
+            axios.post(`https://localhost:7235/api/Authentication/Login-2FA?code=${formData.Otp}&username=${formData.Username}`)
                 .then((response) => {
                     console.log(response);
                     console.log('Form submitted:', formData);
